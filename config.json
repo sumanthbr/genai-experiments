@@ -1,0 +1,19 @@
+{
+    "urls": [
+        "https://azure.microsoft.com/en-us/blog/feed/",
+        "https://techcommunity.microsoft.com/gxcuf89792/rss/board?board.id=Azure-AI-Services-blog",
+        "https://thenewstack.io/feed/",
+        "https://techcommunity.microsoft.com/gxcuf89792/rss/board?board.id=AIPlatformBlog",
+        "https://techcommunity.microsoft.com/gxcuf89792/rss/board?board.id=AICustomerEngineeringTeam",
+        "https://techcommunity.microsoft.com/plugins/custom/microsoft/o365/custom-blog-rss?tid=5608443798244517089&board=AzureInfrastructureBlog",
+        "https://techcommunity.microsoft.com/plugins/custom/microsoft/o365/custom-blog-rss?tid=-7153311335771738881&board=AzureArchitectureBlog",
+        "https://techcommunity.microsoft.com/plugins/custom/microsoft/o365/custom-blog-rss?tid=-8020942118654346298&board=AppsonAzureBlog",
+        "https://cloudblog.withgoogle.com/rss/",
+        "https://kubernetes.io/feed.xml",
+        "https://www.cncf.io/feed/",
+        "https://cloudblogs.microsoft.com/opensource/feed/",
+        "http://feeds.feedburner.com/AmazonWebServicesBlog",
+        "https://medium.com/feed/netflix-techblog",
+        "https://blogs.microsoft.com/feed/"
+      ]
+}
