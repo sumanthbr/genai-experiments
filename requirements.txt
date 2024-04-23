@@ -1,3 +1,5 @@
 feedparser
 google-generativeai
 azure-storage-blob
+sendgrid
+mailjet_rest

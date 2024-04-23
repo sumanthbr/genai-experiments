@@ -5,7 +5,9 @@ import os
 import csv
 from azure.storage.blob import BlobServiceClient
 import google.generativeai as genai
-
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
+from mailjet_rest import Client
 
 def configure_generative_ai(api_key, model_name):
     # Configure the generative AI API
@@ -56,7 +58,7 @@ def generate_article_list(feed_url):
         pub_date = datetime(*entry.published_parsed[:6])
         
         # Check if the item was published within the last day
-        if pub_date >= current_time - timedelta(days=2):
+        if pub_date >= current_time - timedelta(days=1):
             # Add the article title and link to the list
             articles.append((entry.title, entry.link))
     
@@ -133,4 +135,65 @@ upload_summary_to_blob_storage(connection_string, container_name, blob_name, sum
 
 
 # After uploading the file, you can use the summary_list for sending email
+
 # Use the summary_list for sending email
+
+def send_email(api_key, sender_email, recipient_email, subject, body):
+    message = Mail(
+        from_email=sender_email,
+        to_emails=recipient_email,
+        subject=subject,
+        plain_text_content=body
+    )
+    try:
+        sg = SendGridAPIClient(api_key=api_key)
+        response = sg.send(message)
+        print(f"Email sent successfully. Response: {response.status_code}")
+    except Exception as e:
+        print(f"Failed to send email. Error: {str(e)}")
+
+# Define your SendGrid API key
+sendgrid_api_key = os.environ.get("SENDGRID_API_KEY")
+# Define the sender's email address
+sender_email = "sumanthbadethalavr@gmail.com"
+# Define the recipient's email address
+recipient_email = os.environ.get("RECIPENT_EMAIL_LIST")
+# Define the email subject
+subject = "Cloudy with a Chance of AI - Newsletter from Sumanth B R"
+# Define the email body
+# Read the contents of the markdown file
+with open(markdown_file_path, 'r', encoding='utf-8') as file:
+    body = file.read()
+# Send the email
+send_email(sendgrid_api_key, sender_email, recipient_email, subject, body)
+
+
+api_key = os.environ.get("MAILJET_API_KEY")
+api_secret = os.environ.get("MAILJET_SECRET")
+mailjet = Client(auth=(api_key, api_secret), version='v3.1')
+recipient_email = os.environ.get("RECIPENT_EMAIL_LIST")
+with open(markdown_file_path, 'r', encoding='utf-8') as file:
+    body = file.read()
+data = {
+  'Messages': [
+    {
+      "From": {
+        "Email": "sumanthbadethalavr@gmail.com",
+        "Name": "Sumanth"
+      },
+      "To": [
+        {
+          "Email": recipient_email
+        }
+      ],
+      "Subject": "Cloudy with a Chance of AI - Newsletter from Sumanth B R",
+      "TextPart": "My first Mailjet email",
+      "HTMLPart": body,
+      "CustomID": "AppGettingStartedTest"
+    }
+  ]
+}
+result = mailjet.send.create(data=data)
+print (result.status_code)
+print (result.json())
+
