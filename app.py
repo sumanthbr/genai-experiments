@@ -12,17 +12,28 @@ def configure_generative_ai(api_key, model_name):
     genai.configure(api_key=api_key)
     # Set up the model
     generation_config = {
-        "temperature": 1,
-        "top_p": 1,
-        "top_k": 1,
-        "max_output_tokens": 2048,
+    "temperature": 1,
+    "top_p": 0.95,
+    "top_k": 0,
+    "max_output_tokens": 2048,
     }
     safety_settings = [
         {
             "category": "HARM_CATEGORY_HARASSMENT",
             "threshold": "BLOCK_MEDIUM_AND_ABOVE"
         },
-        # Add other safety settings here...
+        {
+            "category": "HARM_CATEGORY_HATE_SPEECH",
+            "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+        },
+        {
+            "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+            "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+        },
+        {
+            "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+            "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+        },
     ]
     model = genai.GenerativeModel(model_name=model_name,
                                   generation_config=generation_config,
@@ -79,7 +90,8 @@ config_file_path = "config.json"
 config_data = read_config_file(config_file_path)
 # Configure the generative AI model
 api_key = os.environ.get("GENERATIVE_AI_API_KEY")
-model_name = "gemini-1.0-pro"
+model_name =  os.environ.get("MODEL_NAME")
+#"gemini-1.0-pro"
 model = configure_generative_ai(api_key, model_name)
 
 # Generate the article list for each URL
